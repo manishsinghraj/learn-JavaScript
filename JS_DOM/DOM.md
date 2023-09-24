@@ -1,7 +1,9 @@
 
 # JavaScript DOM Table of Content
 
-### Document Object Model (DOM)
+<hr>
+
+## Document Object Model (DOM)
 The Document Object Model (DOM) is an API (Application Programming Interface) used to interact with HTML documents. It represents the structured hierarchy of an HTML document as a tree-like structure, allowing developers to access, manipulate, and modify the content and structure of web pages dynamically.
 
 Example:
@@ -23,8 +25,11 @@ Suppose you have an HTML document with the following structure:
 </html>
 ```
 <hr>
+
 ## Nodes and Types of Nodes
+
 Nodes in the DOM represent individual parts of an HTML document. There are several types of nodes, including:
+
 ```
 Element Nodes: These represent HTML elements, such as <div>, <p>, or <ul>.
 ```
@@ -39,11 +44,14 @@ Comment Nodes: These represent comments within the HTML code.
 
 ## Selecting Elements Using DOM
 To manipulate elements in the DOM, you can select them using various methods. Here are some common ones:
->getElementById()
-getElementsByName()
-getElementsByTagName()
-getElementsByClassName()
-querySelector() and querySelectorAll()
+
+> 1. getElementById()
+> 2. getElementsByName()
+> 3. getElementsByTagName()
+> 4. getElementsByClassName()
+> 5. querySelector() and querySelectorAll()
+
+<hr>
 
 ### getElementById()
 This method allows you to select an element by its unique id attribute. It returns the first element with the specified ID.
@@ -341,10 +349,10 @@ document.addEventListener("DOMContentLoaded", function () {
 ```
 <hr>
 
->### querySelector() and querySelectorAll()
+### querySelector() and querySelectorAll()
 >These methods allow you to select elements using CSS selectors.
 
->### querySelector() 
+### querySelector() 
 >returns the first element that matches the selector.
 
 ```html
@@ -404,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 <hr>
 
->### querySelectorAll() 
+### querySelectorAll() 
 >returns a NodeList of all elements that match the selector.
 
 Example code:
@@ -461,18 +469,149 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 ```
+<hr>
+
+## Traversing Elements
+
+> Selecting parent element
+> Selecting child element
+> Selecting Sibling elements
+
+
+### Selecting Parent Element:
+
+Used to access the element's immediate or higher-level container.
+HTML/CSS: parentNode property.
+Example:
+
+```html
+<div id="parent">
+  <p>Child Element</p>
+</div>
+<script>
+  const childElement = document.querySelector('p');
+  const parentElement = childElement.parentNode;
+  console.log(parentElement); // Output: <div id="parent">...</div>
+</script>
+```
+
+<hr>
+
+### Selecting Child Element:
+
+Used to access elements nested within a parent element.
+HTML/CSS: querySelector or children property.
+Example:
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+<script>
+  const parentElement = document.querySelector('#parent');
+  const childElement = parentElement.querySelector('li');
+  console.log(childElement); // Output: <li>Item 1</li>
+</script>
+```
+
+#### Selecting First Child Element
+To access the first child element of a parent, excluding text nodes and comments.
+HTML/CSS: firstElementChild property.
+Example:
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+<script>
+  const parentElement = document.querySelector('#parent');
+  const firstChild = parentElement.firstElementChild;
+  console.log(firstChild); // Output: <li>Item 1</li>
+</script>
+```
+
+#### Selecting Last Child Element
+To access the last child element of a parent, excluding text nodes and comments.
+HTML/CSS: lastElementChild property.
+Example:
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  <li>Item 2</li>
+</ul>
+<script>
+  const parentElement = document.querySelector('#parent');
+  const lastChild = parentElement.lastElementChild;
+  console.log(lastChild); // Output: <li>Item 2</li>
+</script>
+
+```
+#### Selecting All Child Nodes
+To access all child nodes of an element, including text nodes and comments.
+HTML/CSS: childNodes property.
+Example:
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  Text Node
+  <li>Item 2</li>
+</ul>
+<script>
+  const parentElement = document.querySelector('#parent');
+  const childNodes = parentElement.childNodes;
+  console.log(childNodes); // Output: NodeList [li, Text, li]
+</script>
+```
+
+
+#### Selecting All Child Elements
+To access all child elements of an element, excluding text nodes and comments.
+HTML/CSS: children property.
+Example:
+
+```html
+<ul id="parent">
+  <li>Item 1</li>
+  Text Node
+  <li>Item 2</li>
+</ul>
+<script>
+  const parentElement = document.querySelector('#parent');
+  const children = parentElement.children;
+  console.log(children); // Output: HTMLCollection [<li>Item 1</li>, <li>Item 2</li>]
+</script>
+```
 
 
 <hr>
 
+###  Selecting Sibling Elements:
+
+Used to access elements that share the same parent.
+HTML/CSS: nextSibling, previousSibling, nextElementSibling, previousElementSibling.
+Example:
+
+```html
+<ul>
+  <li>Item 1</li>
+  <li>Item 2</li>
+  <li>Item 3</li>
+</ul>
+<script>
+  const item2 = document.querySelector('li:nth-child(2)');
+  const prevItem = item2.previousElementSibling;
+  const nextItem = item2.nextElementSibling;
+  console.log(prevItem); // Output: <li>Item 1</li>
+  console.log(nextItem); // Output: <li>Item 3</li>
+</script>
+```
+<hr>
+
 > to dod
 
-Traversing elements
-Selecting parent element
-Selecting child element
-Selecting Sibling elements
 
-Manipulating HTML elements
+
+### Manipulating HTML elements
 createElement()
 appendChild()
 textContent
@@ -486,20 +625,20 @@ cloneNode()
 removeChild()
 insertBefore()
 
-Attribute methods
+### Attribute methods
 getAttribute()
 setAttribute()
 hasAttribute()
 removeAttribute()
 
-Manipulating Element's Styles
+### Manipulating Element's Styles
 style property
 cssText
 getComputedStyle()
 className property
 classList property
 
-JavaScript Events
+### JavaScript Events
 What is event in JavaScript
 Event Bubbling & Event Capturing
 Event Handler in HTML Attributes
