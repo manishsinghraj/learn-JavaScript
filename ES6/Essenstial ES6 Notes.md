@@ -1,3 +1,4 @@
+```js
 //var let const
 
 // let,cont was introduced in es6 2015
@@ -348,3 +349,5 @@ const teacher = new Teacher('Mosh', "MSc");
 
 //Modules
 // instead of writing code in one File,we addit in different file. 
+
+```
