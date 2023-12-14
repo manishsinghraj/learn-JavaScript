@@ -1,3 +1,4 @@
+```js 
 // prototype object
 
 // Creating an object with a method
@@ -152,4 +153,211 @@ console.log(encodedURL);
 
 
 
+// ********************************************************************
+//DOM
 
+        function geeks() { 
+            var node = document.createElement("P"); 
+            var t = document.createTextNode("GeeksforGeeks"); 
+            node.appendChild(t); 
+            document.getElementById("sudo").appendChild(node); 
+        } 
+        function nClone() { 
+            // Accessing div attribute using a variable geek 
+            var geek = document.getElementsByTagName("DIV")[0]; 
+  
+            // Cloning geek variable into a variable named clone 
+            var clone = geek.cloneNode(true); 
+  
+            // Adding our clone variable to end of the document 
+            document.body.appendChild(clone); 
+        } 
+        function hasAttr() { 
+            var s = document.body.hasAttributes(); 
+            document.getElementById("gfg").innerHTML = s; 
+        } 
+  
+        function Geeks() { 
+            var doc = document.getElementById("listitem"); 
+            doc.removeChild(doc.childNodes[0]); 
+        } 
+  
+        /* Using getElementById */
+        function getAttr() { 
+            var rk = document.getElementById("button").getAttribute("onClick"); 
+            document.getElementById("gfg1").innerHTML = rk; 
+        } 
+  
+        /* Using getElementsByTagName */
+        function getElement() { 
+            var doc = document.getElementsByTagName("p"); 
+            doc[0].style.background = "green"; 
+            doc[0].style.color = "white"; 
+        } 
+  
+        /* Cheacking the equality */
+        function isequal() { 
+            var out = document.getElementById("result"); 
+            var divele = document.getElementsByTagName("div"); 
+            out.innerHTML += 
+                "element 1 equals element 1: " + 
+                divele[0].isEqualNode(divele[0]) + 
+                "<br/>"; 
+            out.innerHTML += 
+                "element 1 equals element 2: " + 
+                divele[0].isEqualNode(divele[1]) + 
+                "<br/>"; 
+            out.innerHTML += 
+                "element 1 equals element 3: " + 
+                divele[0].isEqualNode(divele[2]) + 
+                "<br/>"; 
+        } 
+
+
+// *************************************************************
+// Events
+
+        function hiThere() { 
+            alert("Hi there!"); 
+        } 
+        function focused() { 
+            var e = document.getElementById("inp"); 
+            if (confirm("Got it?")) { 
+                e.blur(); 
+            } 
+        } 
+  
+        /* Mouseover event */
+        document.getElementById("hID").addEventListener("mouseover", over); 
+  
+        /* Mouseoout event */
+        document.getElementById("hID").addEventListener("mouseout", out); 
+  
+        /* Over on green */
+        function over() { 
+            document.getElementById("hID").style.color = "green"; 
+        } 
+  
+        /* Leaving Out Black */
+        function out() { 
+            document.getElementById("hID").style.color = "black"; 
+        } 
+  
+        function Geeks() { 
+            var x = document.getElementById("GFG").value; 
+            document.getElementById("sudo").innerHTML = "Selected Subject: " + x; 
+        } 
+  
+        /* Success alert */
+        function Geek() { 
+            alert("Form submitted successfully."); 
+        } 
+        function Function() { 
+            document.getElementById("geeks").style.fontSize = "30px"; 
+            document.getElementById("geeks").style.color = "green"; 
+        } 
+
+
+// *******************************************************************
+
+
+// window
+
+        // JS location property 
+        let origin = window.location.origin; 
+        document.getElementById("demo").innerHTML = origin; 
+  
+        // JS screen property 
+        function getResolution() { 
+            alert("Your screen is: " + screen.width + "x" + screen.height); 
+        } 
+  
+        // JS toolbar property 
+        var visible = window.toolbar.visible; 
+  
+        // JS navigator property 
+        function checkConnectionStatus() { 
+            if (navigator.onLine) { 
+                alert("Application is online."); 
+            } else { 
+                alert("Application is offline."); 
+            } 
+        } 
+        // JS history property 
+        function getViews() { 
+            alert( 
+                "You've accessed " + history.length + " web pages in this session."
+            ); 
+        } 
+        // JS close property 
+        let myWindow; 
+        function closeWin() { 
+            if (myWindow) { 
+                myWindow.close(); 
+            } 
+        } 
+
+// *******************************
+        var gfgWindow; 
+  
+        // Function that open the new Window 
+        function windowOpen() { 
+            gfgWindow = window.open( 
+                "https://www.geeksforgeeks.org/", 
+                "_blank", 
+                "width=200, height=200"
+            ); 
+        } 
+  
+        // Function that Resize the open Window 
+        function resizeWin() { 
+            gfgWindow.resizeTo(400, 400); 
+            gfgWindow.focus(); 
+        } 
+  
+        // Function that Closes the open Window 
+        function windowClose() { 
+            gfgWindow.close(); 
+        } 
+  
+        // Function that blur the open Window 
+        function windowBlur() { 
+            gfgWindow.blur(); 
+        } 
+  
+        // Function that focus on open Window 
+        function windowFocus() { 
+            gfgWindow.focus(); 
+        } 
+  
+        // Alert function 
+        function wlcm() { 
+            alert("Welcome to GeeksforGeeks"); 
+        } 
+  
+        // Prompt function 
+        function geek() { 
+            var doc = prompt("Please enter some text", "GeeksforGeeks"); 
+            if (doc != null) { 
+                document.getElementById("g").innerHTML = "Welcome to " + doc; 
+            } 
+        } 
+  
+        // Function setTimeout and clearTimeout 
+        var t; 
+        function color() { 
+            if (document.getElementById("btn").style.color == "blue") { 
+                document.getElementById("btn").style.color = "green"; 
+            } else { 
+                document.getElementById("btn").style.color = "blue"; 
+            } 
+        } 
+        function fun() { 
+            t = setTimeout(color, 3000); 
+        } 
+        function stop() { 
+            clearTimeout(t); 
+        } 
+
+
+```
