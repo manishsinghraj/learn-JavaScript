@@ -2450,27 +2450,913 @@ When you call `user.rc1()`, it logs "Subscribe to undefined" because `this.usern
 This example illustrates the difference in behavior between arrow functions and regular functions with respect to the `this` keyword when used within object methods. Arrow functions do not bind their own `this` value, while regular functions do. Therefore, it's important to choose the appropriate function syntax based on the desired behavior regarding the `this` keyword.
 
 
+# JavaScript Scope and Nested Functions
+
+## Example 20: Lexical Scope
+
+```javascript
+function outerFunction() {
+  let counter = 0;
+
+  function innerFunction() {
+    counter++;
+    return counter;
+  }
+
+  return innerFunction;
+}
+
+const closureFunc1 = outerFunction();
+const closureFunc2 = outerFunction();
+
+console.log(closureFunc1()); // Output: ?
+console.log(closureFunc1()); // Output: ?
+console.log(closureFunc2()); // Output: ?
+console.log(closureFunc2()); // Output: ?
+```
+
+**Explanation:**
+
+1. **Outer Function (`outerFunction`):**
+   - `outerFunction` defines a variable `counter` and declares an inner function `innerFunction`.
+   - `innerFunction` increments `counter` by one each time it's called and returns the updated value.
+
+2. **Lexical Scope:**
+   - Each time `outerFunction` is called, it creates a new lexical scope for the returned `innerFunction`. Therefore, multiple instances of `innerFunction` maintain their own separate `counter` variables.
+
+3. **Closure:**
+   - When `closureFunc1` and `closureFunc2` are called, they capture and retain references to their respective `counter` variables from their enclosing lexical scopes.
+
+**Interview Output-Based Question:**
+
+**Question:** What will be the output of the following code snippet?
+
+```javascript
+console.log(closureFunc1()); // Output: ?
+console.log(closureFunc1()); // Output: ?
+console.log(closureFunc2()); // Output: ?
+console.log(closureFunc2()); // Output: ?
+```
+
+**Answer Choices:**
+a) `1`, `2`, `1`, `2`  
+b) `1`, `1`, `2`, `2`  
+c) `1`, `2`, `2`, `3`  
+d) `1`, `1`, `1`, `1`
+
+**Correct Answer:** c) `1`, `2`, `2`, `3`
+
+**Explanation:** 
+- The first call to `closureFunc1()` increments its own `counter` variable from `0` to `1`, and returns `1`. 
+- The second call to `closureFunc1()` increments the same `counter` variable from `1` to `2`, and returns `2`.
+- The first call to `closureFunc2()` operates on a separate `counter` variable (initialized to `0`), increments it from `0` to `1`, and returns `1`.
+- The second call to `closureFunc2()` operates on the same `counter` variable as the previous call (which was incremented to `1`), increments it from `1` to `2`, and returns `2`.
+
+
+## Example 21: Closure
+
+```javascript
+function createCounter() {
+  let count = 0;
+
+  return function() {
+    count++;
+    return count;
+  };
+}
+
+const counter1 = createCounter();
+const counter2 = createCounter();
+
+console.log(counter1()); // Output: ?
+console.log(counter1()); // Output: ?
+console.log(counter2()); // Output: ?
+console.log(counter2()); // Output: ?
+```
+
+**Explanation:**
+
+1. **`createCounter` Function:**
+   - `createCounter` is a higher-order function that returns an inner function.
+   - The inner function maintains a private `count` variable using closure and increments it by one each time it's called.
+
+2. **Closure:**
+   - Each time `createCounter` is called, it creates a new lexical scope for the returned inner function. Consequently, each instance of the inner function maintains its own separate `count` variable, isolated from other instances.
+
+**Interview Output-Based Question:**
+
+**Question:** What will be the output of the following code snippet?
+
+```javascript
+console.log(counter1()); // Output: ?
+console.log(counter1()); // Output: ?
+console.log(counter2()); // Output: ?
+console.log(counter2()); // Output: ?
+```
+
+**Answer Choices:**
+a) `1`, `2`, `1`, `2`  
+b) `1`, `1`, `1`, `1`  
+c) `1`, `2`, `2`, `3`  
+d) `2`, `3`, `1`, `2`
+
+**Correct Answer:** c) `1`, `2`, `2`, `3`
+
+**Explanation:** 
+- The first call to `counter1()` increments its own `count` variable from `0` to `1`, and returns `1`. 
+- The second call to `counter1()` increments the same `count` variable from `1` to `2`, and returns `2`.
+- The first call to `counter2()` operates on a separate `count` variable (initialized to `0`), increments it from `0` to `1`, and returns `1`.
+- The second call to `counter2()` operates on the same `count` variable as the previous call (which was incremented to `1`), increments it from `1` to `2`, and returns `2`.
+
+
+## Example 22: Closure Scope Chaining
+
+```javascript
+var username = "Piyush";
+
+function makeFunc() {
+  var name = "Mozilla";
+
+  function displayName(num) {
+    console.log(name, num, username);
+  }
+
+  return displayName;
+}
+
+makeFunc()(5);
+```
+
+**Explanation:**
+
+1. **Variable Declarations:**
+   - `username` is declared in the global scope with the value `"Piyush"`.
+   - `makeFunc` function is defined, which contains another function `displayName`.
+   - Inside `makeFunc`, `name` is declared with the value `"Mozilla"`.
+
+2. **Closure Scope Chaining:**
+   - `displayName` function has access to its enclosing scope, including the variables `name` and `username`, due to closure.
+   - When `makeFunc()` is called, it returns the `displayName` function.
+
+**Interview Output-Based Question:**
+
+**Question:** What will be logged to the console when `makeFunc()(5)` is executed?
+
+**Answer Choices:**
+a) `"Mozilla" 5 "Piyush"`  
+b) `"Mozilla" undefined "Piyush"`  
+c) `"Mozilla" 5 undefined`  
+d) `"Piyush" 5 "Piyush"`
+
+**Correct Answer:** a) `"Mozilla" 5 "Piyush"`
+
+**Explanation:** 
+- `makeFunc()` is called, returning the `displayName` function.
+- When `displayName` is invoked with `5`, it logs `"Mozilla"` (captured from the lexical scope of `makeFunc`), `5`, and the global variable `username` with the value `"Piyush"`.
+
+
+
+## Example 23: Nested Function with Closure
+
+```javascript
+// global scope
+var e = 10;
+
+function sum(a) {
+  return function(b) {
+    return function(c) {
+      // outer functions scope
+      return function(d) {
+        // local scope
+        return a + b + c + d + e;
+      };
+    };
+  };
+}
+
+console.log(sum(1)(2)(3)(4)); // log 20
+```
+
+**Explanation:**
+
+1. **Variable Declarations:**
+   - `e` is declared in the global scope with the value `10`.
+
+2. **Function Definitions:**
+   - `sum` function takes `a` as its parameter and returns a function.
+   - The returned function also takes `b` as its parameter and returns another function.
+   - This nesting continues until the fourth returned function takes `d` as its parameter and returns the sum of all parameters plus the global variable `e`.
+
+**Interview Output-Based Question:**
+
+**Question:** What will be logged to the console when `sum(1)(2)(3)(4)` is executed?
+
+**Answer Choices:**
+a) `20`  
+b) `40`  
+c) `30`  
+d) `10`
+
+**Correct Answer:** a) `20`
+
+**Explanation:** 
+- The `sum` function is called sequentially with arguments `1`, `2`, `3`, and `4`.
+- Each nested function adds its argument to the previous accumulated value (`a + b + c + d`), resulting in `1 + 2 + 3 + 4 = 10`.
+- Additionally, the global variable `e` with the value `10` is also added to the sum, resulting in `10 + 10 = 20`.
+
+<br>
+
+- `learn more:` https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+
+
+
+## Example 24: Shadowing in IIFE
+
+```javascript
+let count = 0;
+
+(function printCount() {
+  if (count == 0) {
+    let count = 1; // Shadowing
+    console.log(count); // 1
+  }
+  // count is 0 from global
+  console.log(count);
+})();
+```
+
+**Explanation:**
+
+1. **Variable Declarations:**
+   - `count` is declared in the global scope with the initial value `0`.
+
+2. **IIFE (Immediately Invoked Function Expression):**
+   - An IIFE is used to encapsulate the code.
+   - Inside the IIFE, another variable `count` is declared using `let` keyword, which shadows the global variable `count`.
+
+**Interview Output-Based Question:**
+
+**Question:** What will be logged to the console when the code is executed?
+
+**Answer Choices:**
+a) `1`, `1`  
+b) `1`, `0`  
+c) `0`, `0`  
+d) `0`, `1`
+
+**Correct Answer:** b) `1`, `0`
+
+**Explanation:** 
+- Inside the IIFE, a local variable `count` is declared and initialized to `1`.
+- This local `count` variable is used within the if statement, so `1` is logged to the console.
+- Outside the if statement, the global `count` variable with the value `0` is logged to the console.
 
 
 
 
 
+## Example 25: form closure
+
+```javascript
+//create a fnc
+
+// Usage example:
+var addSix = createBase(6);
+console.log(addSix(10)); // returns 16
+console.log(addSix(21)); // returns 27
+```
+
+
+**Answer**
+```javascript
+function createBase(base) {
+  // Return a function that adds the given argument to the base value
+  return function(additionalValue) {
+    return base + additionalValue;
+  };
+}
+
+// Usage example:
+var addSix = createBase(6);
+console.log(addSix(10)); // returns 16
+console.log(addSix(21)); // returns 27
+```
+
+Explanation:
+
+1. The `createBase` function takes a `base` value as a parameter and returns another function.
+2. The returned function captures the `base` value in its closure and adds the `additionalValue` parameter to it.
+3. When `addSix` is invoked with different arguments, it adds those arguments to the base value of `6`, returning the sum.
+
+Sure, here's the full code example with optimization explained in Markdown format:
+
+
+## Example 26: Closure Time Optimization
+
+```javascript
+function find(index) {
+    let a = [];
+    for (let i = 0; i < 1000000; i++) {
+        a[i] = i * 1;
+    }
+    console.log(a[index]);
+}
+
+console.time("6");
+find(6);
+console.timeEnd("6");
+
+console.time("12");
+find(50);
+console.timeEnd("12");
+```
+
+**Output:**
+```
+6
+6: 17.741943359375 ms
+50
+12: 16.117919921875 ms
+```
+
+**Optimized Version:**
+
+```javascript
+function find() {
+    let a = [];
+    for (let i = 0; i < 1000000; i++) {
+        a[i] = i * 1;
+    }
+    // Return a function that accesses the precomputed value directly
+    return function(index) {
+        console.log(a[index]);
+    };
+}
+
+// Usage example:
+const findValue = find();
+
+console.time("6");
+findValue(6);
+console.timeEnd("6");
+
+console.time("12");
+findValue(50);
+console.timeEnd("12");
+
+//output
+// 6
+// 6 : 0.139892578125 ms
+// 50
+// 2: 0.02099609375 ms
+```
+
+**Explanation:**
+
+**Issue:**
+- In the original code, the `find` function recalculates the array values every time it is called with a different index.
+- This approach leads to unnecessary computation overhead, especially for large arrays.
+
+**Solution:**
+- To optimize the code, we precompute the array values outside the `find` function.
+- We create a closure by returning a function from the `find` function, which encapsulates the precomputed array.
+- This closure allows us to directly access the precomputed array values without the need for recalculation.
+- By using closures and precomputing the array values, we eliminate the need for redundant computations and improve the efficiency of the code.
+
+
+## Example 27: Logging with setTimeout
+
+```javascript
+for (var i = 0; i < 3; i++) {
+    setTimeout(function log() {
+        console.log(i); // What is logged?
+    }, 1000);
+}
+```
+
+**Output:**
+After 1 second (due to the timeout), the value of `i` is logged three times consecutively, each time printing `3`.
+
+**Explanation:**
+- In the loop, `setTimeout` is called three times, but it doesn't execute immediately.
+- After the loop finishes, `i` has the final value of `3`.
+- When the timeout expires (after 1 second in this case), the callback function inside `setTimeout` is executed.
+- However, by the time the callback function is executed, the loop has already finished executing, and `i` has the final value of `3`.
+- So, when `console.log(i)` is called inside the callback function, it prints the value of `i` at that moment, which is `3`.
+
+**Optimized Solution:**
+To log the correct value of `i` for each iteration, we can use block-scoped variables with `let`:
+
+```javascript
+for (let i = 0; i < 3; i++) {
+    setTimeout(function log() {
+        console.log(i); // Logs 0, 1, 2 respectively
+    }, 1000);
+}
+```
+
+**Explanation:**
+- By using `let` instead of `var`, `i` is block-scoped, which means each iteration of the loop will have its own separate `i`.
+- Therefore, when the callback function inside `setTimeout` is executed, it will capture the value of `i` for the corresponding iteration, resulting in the expected behavior of logging `0`, `1`, and `2` respectively after 1 second for each iteration.
+
+```javascript
+function a() {
+    for (var i = 0; i < 3; i++) {
+        setTimeout(function log() {
+           console.log(i); // What is logged?
+        }, i * 1000);
+    }
+}
+
+a();
+``` 
+- not allowed to change var to let, achieve 0, 1, 2
+
+```javascript
+function a() {
+    for (var i=0; i < 3; i++) {
+        function inner(i) {
+            setTimeout(function log() {
+            console.log(i); // What is logged?
+            }, i* 1000);
+        }
+        inner(i);
+    }
+}
+a();
+
+//OR
+
+function a() {
+    for (var i = 0; i < 3; i++) {
+        setTimeout((function (index) {
+            return function () {
+                console.log(index); // Each log has its own scope for 'index'
+            };
+        })(i), i * 1000);
+    }
+}
+
+a();
+
+
+```
+
+## Example 28: Closure Private Counter
+
+```javascript
+function counter() {
+    var _counter = 0;
+    function add(increment) {
+        _counter += increment;
+    }
+    function retrieve() {
+        return "Counter = " + _counter;
+    }
+    return {
+        add,
+        retrieve,
+    };
+}
+
+const count = counter();
+count.add(5);
+count.add(10);
+console.log(count.retrieve()); // Output: Counter = 15
+```
+
+**Explanation:**
+- The `counter` function defines a private variable `_counter` initialized to `0` and two inner functions `add` and `retrieve`.
+- The `add` function takes an `increment` parameter and increments the `_counter` variable by the given `increment`.
+- The `retrieve` function returns a string representation of the current counter value.
+- Inside the `counter` function, an object with references to the `add` and `retrieve` functions is returned, creating a closure that retains access to the `_counter` variable even after the `counter` function has finished executing.
+- When `count.add(5)` is called, the `_counter` variable is incremented by `5`.
+- Similarly, when `count.add(10)` is called, the `_counter` variable is further incremented by `10`.
+- Finally, `count.retrieve()` retrieves the current value of `_counter`, which is `15`, and logs it to the console.
+
+This example demonstrates how closures can be used to create private variables in JavaScript, allowing for encapsulation and information hiding within functions. The returned object provides a controlled interface to manipulate and retrieve the private variable's value.
 
 
 
 
+## Example 29: Module Pattern
+In the module pattern, JavaScript developers use closures to create private variables and functions, encapsulating them within a single object. This approach allows for better organization of code and prevents polluting the global namespace. Let's create an example demonstrating the module pattern:
+
+```javascript
+const Calculator = (function() {
+    // Private variables
+    let result = 0;
+
+    // Private functions
+    function add(a, b) {
+        return a + b;
+    }
+
+    function subtract(a, b) {
+        return a - b;
+    }
+
+    // Public interface
+    return {
+        // Public methods
+        add: function(a, b) {
+            result = add(a, b);
+            return result;
+        },
+        subtract: function(a, b) {
+            result = subtract(a, b);
+            return result;
+        },
+        getResult: function() {
+            return result;
+        }
+    };
+})();
+
+// Usage example:
+Calculator.add(5, 3); // Returns 8
+Calculator.subtract(10, 2); // Returns 8
+console.log(Calculator.getResult()); // Output: 8
+```
+
+**Explanation:**
+- In this example, we create a module named `Calculator` using an IIFE (Immediately Invoked Function Expression).
+- Inside the IIFE, we define private variables (`result`) and functions (`add` and `subtract`).
+- The private variables and functions are accessible only within the scope of the IIFE due to closures.
+- We return an object containing public methods (`add`, `subtract`, and `getResult`), which have access to the private variables and functions.
+- Users can interact with the `Calculator` module using its public methods, but they cannot directly access or modify its private members.
+
+This example demonstrates how to create a module with private members using the module pattern in JavaScript. It helps organize code and prevents unintended modifications to internal state by encapsulating functionality within a self-contained unit.
+
+## Example 30: Run Once
+
+```javascript
+let name;
+function greet() {
+    name = "Manish";
+    console.log("Hello", name);
+}
+    greet(); //Hello Manish 
+    greet(); //Hello Manish
+    greet(); //Hello Manish
+    greet(); //Hello Manish
+    greet(); //Hello Manish
+    greet(); //Hello Manish
+```
+
+### Method 1: Using Closure
+
+```javascript
+let name;
+
+function greet() {
+    let called = 0;
+    return function() {
+        if (called > 0) {
+            console.log("Already Called");
+        } else {
+            name = "Manish";
+            console.log("Hello", name);
+            called++;
+        }
+    };
+}
+
+let g = greet();
+g(); // Hello Manish
+g(); // Already Called
+g(); // Already Called
+g(); // Already Called
+g(); // Already Called
+```
+
+**Explanation:**
+- In this method, we define a `greet` function that returns another function using a closure.
+- The inner function keeps track of the number of times it has been called using the `called` variable.
+- If `called` is greater than 0, it means the function has already been called, so it logs "Already Called". Otherwise, it sets the `name` variable and logs "Hello" followed by the name.
+- This approach ensures that the function runs only once by using a closure to maintain the state.
+
+### Method 2: Using a Custom Once Function
+
+```javascript
+function once(func, context) {
+    let ran;
+    return function() {
+        if (func) {
+            ran = func.apply(context || this, arguments);
+            func = null;
+        }
+        return ran;
+    };
+}
+
+const hello = once(() => console.log("hello"));
+hello(); // hello
+hello(); // (no output)
+hello(); // (no output)
+```
+
+**Explanation:**
+- Here, we define a `once` function that takes another function `func` as input and returns a new function.
+- The returned function can only be called once. After the first call, subsequent calls to the function have no effect.
+- Inside the returned function, we use a closure to capture the `ran` variable, which keeps track of whether the function has been called before.
+- If `func` exists (meaning it has not been called yet), we call it and store the result in `ran`. We then set `func` to `null` to ensure it cannot be called again.
+- This approach provides a reusable way to create functions that run only once.
+
+### Method 3: Using lodash's `once` Function
+
+```javascript
+const _ = require('lodash');
+
+let name;
+const greet = _.once(function() {
+    name = "Manish";
+    console.log("Hello", name);
+});
+
+greet(); // Hello Manish
+greet(); // (no output)
+```
+
+**Explanation:**
+- Lodash provides a utility function called `once`, which creates a version of a function that can only be called once.
+- In this method, we use `_.once` to create a `greet` function that runs only once.
+- The first call to `greet` sets the `name` variable and logs "Hello" followed by the name.
+- Subsequent calls to `greet` have no effect and produce no output.
+- Lodash's `once` function provides a convenient way to ensure that a function runs only once, without having to manually manage state or write custom logic.
 
 
 
+## Example 31: Implement memoized fn
+
+```javascript  
+const clumsysquare = (num1, num2) => {
+    for (let i = 1; i <= 100000000; i++) { }
+    return num1 * num2;
+};
+console.time("First call");
+console.log(clumsysquare(9467, 7649));
+console.timeEnd("First call");
+console.time("Second call");
+console.log(clumsysquare(9467, 7649));
+console.timeEnd("Second call");
+
+
+// output
+// 72413083
+// First call: 67.257080078125 ms
+// 72413083
+// Second call: 60.3701171875 ms
+
+```
+
+
+```javascript
+const memoizedSquare = (function() {
+    const cache = {};
+    return function(num1, num2) {
+        const key = `${num1}_${num2}`;
+        if (cache[key] === undefined) {
+            for (let i = 1; i <= 100000000; i++) { } // Simulating heavy computation
+            cache[key] = num1 * num2;
+        }
+        return cache[key];
+    };
+})();
+
+console.time("First call");
+console.log(memoizedSquare(9467, 7649));
+console.timeEnd("First call");
+console.time("Second call");
+console.log(memoizedSquare(9467, 7649));
+console.timeEnd("Second call");
+
+// 72413083
+// First call: 61.737060546875 ms
+// 72413083
+// Second call: 0.02685546875 ms
+```
+
+**Explanation:**
+- In this method, we implement memoization using a closure. 
+- We define a function `memoizedSquare` that returns another function using a closure.
+- Inside the closure, we maintain a `cache` object to store previously computed results.
+- When `memoizedSquare` is called with arguments `num1` and `num2`, we generate a unique key based on the arguments.
+- If the result for the given key is not present in the cache, we compute it and store it in the cache.
+- Subsequent calls to `memoizedSquare` with the same arguments will return the result from the cache without re-computation.
+- This approach significantly reduces the execution time for repeated calls with the same arguments, as the heavy computation is performed only once and the result is cached for reuse.
 
 
 
+```javascript
+// Example 28: Currying -  Higher-Order Function for Arithmetic Operations
+// evaluate("sum") (4) (2) => 6
+// evaluate("multiply")(4)(2) => 8
+// evaluate("divide") (4) (2) => 2
+// evaluate("substract") (4) (2) => 2
+
+// Define the evaluate function
+function evaluate(operation) {
+    // Define the inner function based on the provided operation
+    let func;
+    switch (operation) {
+        case "sum":
+            func = (a, b) => a + b;
+            break;
+        case "multiply":
+            func = (a, b) => a * b;
+            break;
+        case "divide":
+            func = (a, b) => a / b;
+            break;
+        case "subtract":
+            func = (a, b) => a - b;
+            break;
+        default:
+            throw new Error("Invalid operation");
+    }
+    
+    // Return the function that performs the specified operation
+    return function(a) {
+        return function(b) {
+            return func(a, b);
+        };
+    };
+}
+
+// Test cases
+console.log(evaluate("sum")(4)(2));        // Output: 6
+console.log(evaluate("multiply")(4)(2));   // Output: 8
+console.log(evaluate("divide")(4)(2));     // Output: 2
+console.log(evaluate("subtract")(4)(2));   // Output: 2
+```
+
+**Explanation:**
+- The `evaluate` function takes a string `operation` as input and returns a function.
+- Inside `evaluate`, a switch statement is used to determine the appropriate function (`func`) based on the provided `operation`.
+- The returned function accepts two arguments `a` and `b`, representing the operands.
+- Depending on the `operation`, the function `func` performs the specified operation on `a` and `b`.
+- The returned function evaluates the operation on the provided operands and returns the result.
 
 
 
+## Example 32: Infinite Currying
+
+```javascript
+// Original function to demonstrate infinite currying
+function add(a) {
+    return function(b) {
+        if (b) return add(a + b);
+        return a;
+    };
+}
+
+// Test case: Sum of multiple numbers using infinite currying
+console.log(add(5)(2)(4)(8)()); // Output: 19
+```
+
+**Explanation:**
+- The `add` function takes a number `a` as input and returns a new function.
+- This returned function also takes a number `b` as input.
+- If `b` is provided, it adds `a` and `b`, then returns a new function that continues the process of adding more numbers.
+- If `b` is not provided (or falsy), it returns the accumulated sum.
+- This allows for infinite currying, where you can call the `add` function with any number of arguments, and it will keep currying until no more arguments are provided, at which point it returns the sum of all accumulated numbers.
+
+---
+
+## Example 33: Infinite Currying
+
+```javascript
+// Define a currying function
+function curry(fn) {
+    return function curried(...args) {
+        if (args.length >= fn.length) {
+            return fn(...args);
+        } else {
+            return function(...nextArgs) {
+                return curried(...args.concat(nextArgs));
+            };
+        }
+    };
+}
+
+// Test case: Sum of multiple numbers using infinite currying
+const sum = curry((...args) => args.reduce((acc, curr) => acc + curr, 0));
+
+console.log(sum(1)(2)(3)(4)(5)); // Output: 15
+console.log(sum(1)(2, 3)(4, 5)); // Output: 15
+console.log(sum(1, 2)(3, 4)(5)); // Output: 15
+```
+
+**Explanation:**
+- The `curry` function takes a function `fn` as input and returns a new function `curried`.
+- The `curried` function collects arguments until it has received the same number of arguments as the original function `fn`.
+- Once the required number of arguments is collected, it applies the original function `fn` with those arguments.
+- If the collected arguments are less than the required number, it returns a new function that continues to collect additional arguments until the required number is reached.
+- This process allows for infinite currying, where you can call the curried function with any number of arguments, and it will keep currying until all arguments are collected before invoking the original function.
 
 
 
+## Example 34: Partial Application
+
+```javascript
+// Original function to demonstrate partial application
+function sum(a) {
+    return function(b, c) {
+        return a + b + c;
+    };
+}
+
+// Test case: Partial application of the sum function
+const x = sum(10);
+console.log(x(5, 6)); // Output: 21
+console.log(x(3, 2)); // Output: 15
+
+// Alternatively
+console.log(sum(20)(1, 4)); // Output: 25
+```
+
+**Explanation:**
+- The `sum` function takes a single argument `a` and returns a new function.
+- This returned function takes two arguments `b` and `c` and calculates the sum of `a`, `b`, and `c`.
+- Partial application is demonstrated by calling the `sum` function with only the first argument (`a`), creating a new function `x` with `a` pre-filled.
+- The new function `x` can then be called with the remaining arguments (`b` and `c`) to calculate the sum.
+- Alternatively, partial application can be achieved directly by chaining function calls, as shown in the last example.
+
+
+```javascript
+// Example 31: Partial Application
+
+// Original function to demonstrate partial application
+function greet(greeting, name) {
+    return `${greeting}, ${name}!`;
+}
+
+// Partial application function
+function partial(fn, ...args) {
+    return function(...remainingArgs) {
+        return fn(...args, ...remainingArgs);
+    };
+}
+
+// Test case: Partial application of the greet function
+const sayHello = partial(greet, "Hello");
+console.log(sayHello("John")); // Output: "Hello, John!"
+
+const sayHi = partial(greet, "Hi");
+console.log(sayHi("Alice")); // Output: "Hi, Alice!"
+```
+
+**Explanation:**
+- The `greet` function takes two arguments: `greeting` and `name`, and returns a formatted greeting message.
+- The `partial` function takes a function `fn` and a list of arguments `...args`.
+- It returns a new function that, when called with additional arguments (`...remainingArgs`), applies both the original arguments and the additional arguments to the original function `fn`.
+- This allows for partial application, where you can pre-fill some arguments of a function to create a new function with fewer parameters.
+- In the example, `partial` is used to create new functions `sayHello` and `sayHi` that partially apply the `greet` function with the greeting `"Hello"` and `"Hi"`, respectively.
+- When these new functions are called with a single argument (the `name`), they produce the desired greeting message with the predefined greeting.
+
+
+## Example 35: Currying
+
+<!-- Converts f(a, b, c) into f(a)(b)(c) -->
+
+```javascript
+
+// Original function to demonstrate currying
+function sum(a, b, c) {
+    return a + b + c;
+}
+
+// Currying function
+function curry(fn) {
+    return function curried(...args) {
+        if (args.length >= fn.length) {
+            return fn(...args);
+        } else {
+            return function(...nextArgs) {
+                return curried(...args.concat(nextArgs));
+            };
+        }
+    };
+}
+
+// Test case: Currying the sum function
+const curriedSum = curry(sum);
+console.log(curriedSum(1)(2)(3)); // Output: 6
+```
+
+**Explanation:**
+- The `sum` function takes three arguments `a`, `b`, and `c`, and returns their sum.
+- The `curry` function is used to convert the `sum` function into a curried function.
+- When called with fewer arguments than expected, the curried function returns a new function that takes the remaining arguments.
+- This allows for partial application and chaining of function calls, resulting in a more flexible and expressive way of invoking the original function.
+
+<hr>
+<hr>
+<hr>
+<hr>
+
+---
 
 
 
@@ -2639,5 +3525,4 @@ for (let i = 1; i <= 5; i++) {
 **Explanation:** 
 In this code snippet, `let` is used to declare `i`, making it block-scoped. Therefore, each iteration of the loop creates a new lexical environment for `i`. Inside the immediately invoked function expression (IIFE), `i` is passed as an argument, creating a new closure for each iteration. As a result, when the `setTimeout` callback functions are executed, they capture the correct value of `i` for each iteration, resulting in logging `1`, `2`, `3`, `4`, and `5` to the console at intervals of one second each.
 
-This corrected version provides a clearer explanation of the behavior of each code snippet. Let me know if you need further clarification!
 
