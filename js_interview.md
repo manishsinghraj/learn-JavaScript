@@ -2144,9 +2144,6 @@ test(); // Output: b has already been declared
 **Explanation:** In this example, `a` is declared using `var`, making it function-scoped, while `b` is declared using `let`, making it block-scoped. Inside the `if` block, a new variable `a` is declared using `let`, which shadows the outer `a` only within that block. However, when attempting to declare `b` using `var` within the same block, it results in an error because `b` has already been declared using `let` within the same block.
 
 
-Certainly! Here's the continuation of the markdown file with examples demonstrating variable redeclaration:
-
-
 ## Example 5
 ```javascript
 var x = 10;
@@ -2195,10 +2192,6 @@ console.log(z); // SyntaxError: Missing initializer in const declaration
 **Explanation:** Unlike `var` and `let`, variables declared with `const` must be initialized at the time of declaration. Therefore, attempting to declare `z` with `const` without providing an initial value results in a SyntaxError.
 
 
-Sure, here's an updated version of the example including `let` and `const` declarations:
-
-
-
 ## Example 11
 
 ```javascript
@@ -2234,10 +2227,6 @@ const c = 30;
 
 **Explanation:** Similar to `let`, variables declared with `const` are also not initialized until their declaration statement is reached during execution. Therefore, attempting to access `c` before it's declared results in a ReferenceError.
 
-You're right. I apologize for the oversight. Let me correct that.
-
-In the provided function `abc()`, when trying to access variable `b` before its initialization, a `ReferenceError` will occur because `let` and `const` variables are not initialized until their declaration statement is reached.
-Sure, let's update the markdown with the corrected example and label it as Example 14:
 
 
 ## Example 14
@@ -2261,10 +2250,11 @@ abc();
 4. `var` declaration (`a`) is also hoisted to the top of the function scope but is initialized with `undefined`.
 5. `const c = 30;` initializes `c` with the value `30`.
 
+In the provided function `abc()`, when trying to access variable `b` before its initialization, a `ReferenceError` will occur because `let` and `const` variables are not initialized until their declaration statement is reached.
+
+
 Therefore, attempting to access `b` before its declaration results in a `ReferenceError`.
 
-
-Certainly! Here's the updated markdown with the provided JavaScript code added as Example 15:
 
 
 # JavaScript Scope and Nested Functions
@@ -2420,6 +2410,7 @@ arrowFunction(1, 2, 3);
 
 When you run the code, you'll see the difference in behavior between regular functions and arrow functions, particularly with regards to the `arguments` object and the `this` keyword. Regular functions have their own `arguments` object, while arrow functions do not. Additionally, the value of `this` inside an arrow function is determined by the enclosing lexical scope, while for regular functions it depends on how the function is called.
 
+
 ## Example 19: `this` in Arrow Functions vs. Regular Functions
 
 ```javascript
@@ -2504,7 +2495,7 @@ b) `1`, `1`, `2`, `2`
 c) `1`, `2`, `2`, `3`  
 d) `1`, `1`, `1`, `1`
 
-**Correct Answer:** c) `1`, `2`, `2`, `3`
+**Correct Answer:** a) `1`, `2`, `1`, `2`
 
 **Explanation:** 
 - The first call to `closureFunc1()` increments its own `counter` variable from `0` to `1`, and returns `1`. 
@@ -2560,7 +2551,7 @@ b) `1`, `1`, `1`, `1`
 c) `1`, `2`, `2`, `3`  
 d) `2`, `3`, `1`, `2`
 
-**Correct Answer:** c) `1`, `2`, `2`, `3`
+**Correct Answer:** a) `1`, `2`, `1`, `2`
 
 **Explanation:** 
 - The first call to `counter1()` increments its own `count` variable from `0` to `1`, and returns `1`. 
