@@ -3497,23 +3497,40 @@ In this code snippet, the loop iterates from `1` to `5`, and for each iteration,
 
 ### Code Snippet 2
 ```javascript
-for (let i = 1; i <= 5; i++) {
+for (VAR i = 1; i <= 5; i++) {
     (function(i) {
         setTimeout(function() {
             console.log(i);
         }, i * 1000);
     })(i);
 }
+
+//OR
+
+for (LET i = 1; i <= 5; i++) {
+    setTimeout(function() {
+        console.log(i);
+    }, i * 1000);
+}
+
+
 ```
 **Answer:** 
 ```
-1
-2
-3
-4
-5
+1 (after 1 second)
+2 (after 2 seconds)
+3 (after 3 seconds)
+4 (after 4 seconds)
+5 (after 5 seconds)
 ```
 **Explanation:** 
 In this code snippet, `let` is used to declare `i`, making it block-scoped. Therefore, each iteration of the loop creates a new lexical environment for `i`. Inside the immediately invoked function expression (IIFE), `i` is passed as an argument, creating a new closure for each iteration. As a result, when the `setTimeout` callback functions are executed, they capture the correct value of `i` for each iteration, resulting in logging `1`, `2`, `3`, `4`, and `5` to the console at intervals of one second each.
 
+### Comparison
+Both snippets will produce the same output, logging the values 1 through 5 with a delay corresponding to their value in seconds. The primary difference is in how they achieve the same result:
+
+- **First Snippet**: Uses an IIFE to create a new scope for each iteration, capturing the current value of `i`.
+- **Second Snippet**: Relies on the block-scoping of `let` to capture the correct value of `i` for each `setTimeout`.
+
+With the introduction of `let` in ES6, the second snippet is more straightforward and idiomatic, avoiding the need for an IIFE to capture the loop variable's value.
 
